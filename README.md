@@ -18,10 +18,9 @@ import (
 )
 
 func main() {
-	client := openai.NewClient("your api key")
-	chat := openai.NewChatCompletion()
+	client, _ := openai.NewClient("your api key")
+	chat, _ := openai.NewChatCompletion()
 
-    	// Prompt
 	chat.AddUserMessage("Hello world!")
 
 	response, err := client.CreateChatCompletion(chat)
@@ -33,7 +32,7 @@ func main() {
 
 	// Support context
 	// chat.AddAssistantMessage(response.Choices[0].Message.Content)
-	
+
 	fmt.Println(response.Choices[0].Message.Content)
 }
 
