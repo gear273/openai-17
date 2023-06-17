@@ -8,19 +8,19 @@ import (
 )
 
 type Client struct {
-	config Config
+	Config Config
 }
 
 func NewClient(apiKey string) (*Client, error) {
 	config := defaultConfig(apiKey)
 	return &Client{
-		config: config,
+		Config: config,
 	}, nil
 }
 
 func (c *Client) request(request *http.Request, v any) error {
 	c.setHeaders(request)
-	response, err := c.config.HTTPClient.Do(request)
+	response, err := c.Config.HTTPClient.Do(request)
 	if err != nil {
 		return err
 	}
@@ -36,7 +36,7 @@ func (c *Client) request(request *http.Request, v any) error {
 func (c *Client) setHeaders(req *http.Request) {
 	req.Header.Set("Accept", "application/json; charset=utf-8")
 	req.Header.Set("Content-Type", "application/json")
-	req.Header.Set("Authorization", fmt.Sprintf("Bearer %s", c.config.apiKey))
+	req.Header.Set("Authorization", fmt.Sprintf("Bearer %s", c.Config.apiKey))
 }
 
 func isFailureStatusCode(resp *http.Response) bool {

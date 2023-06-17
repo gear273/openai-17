@@ -56,7 +56,7 @@ type ChatCompletionResponse struct {
 }
 
 func (c *Client) CreateChatCompletion(request ChatCompletionRequest) (response ChatCompletionResponse, err error) {
-	url := c.config.apiBase + chatCompletionsSuffix
+	url := c.Config.apiBase + chatCompletionsSuffix
 	by, _ := json.Marshal(request)
 	payload := bytes.NewReader(by)
 
