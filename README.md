@@ -22,7 +22,7 @@ func main() {
 	client := openai.NewClient("your api key")
 	chat := openai.NewChatCompletion()
 
-    // Prompt
+    	// Prompt
 	chat.AddUserMessage("Hello world!")
 
 	response, err := client.CreateChatCompletion(chat)
