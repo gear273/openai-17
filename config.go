@@ -13,9 +13,17 @@ type Config struct {
 	HTTPClient *http.Client
 }
 
-func defaultConfig(APIKey string) Config {
+func (c *Config) SetAPIKey(key string) {
+	c.apiKey = key
+}
+
+func (c *Config) SetAPIBase(base string) {
+	c.apiBase = base
+}
+
+func defaultConfig(key string) Config {
 	return Config{
-		apiKey:  APIKey,
+		apiKey:  key,
 		apiBase: openaiAPIBaseV1,
 
 		HTTPClient: &http.Client{},

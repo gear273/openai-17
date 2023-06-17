@@ -83,9 +83,13 @@ func (c *ChatCompletionRequest) AddAssistantMessage(content string) {
 	})
 }
 
-func NewChatCompletion() ChatCompletionRequest {
+func (c *ChatCompletionRequest) ClearMessage(content string) {
+	c.Messages = []ChatCompletionMessage{}
+}
+
+func NewChatCompletion() (ChatCompletionRequest, error) {
 	return ChatCompletionRequest{
 		Model:    GPT3Dot5Turbo,
 		Messages: []ChatCompletionMessage{},
-	}
+	}, nil
 }
