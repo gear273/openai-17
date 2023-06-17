@@ -1,5 +1,4 @@
-# chater
-Using the OpenAI API in Golang
+## Using the OpenAI API in Golang
 
 ## Chat Completion
 Use the same format for the messages as you would for the official [OpenAI API](https://platform.openai.com/docs/guides/gpt/chat-completions-api).
