@@ -24,7 +24,6 @@ func main() {
 	chat.AddUserMessage("Hello world!")
 
 	response, err := client.CreateChatCompletion(chat)
-
 	if err != nil {
 		fmt.Printf("ChatCompletion error: %v\n", err)
 		return
