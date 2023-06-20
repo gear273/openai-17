@@ -18,8 +18,8 @@ import (
 )
 
 func main() {
-	client, _ := openai.NewClient("your api key")
-	chat, _ := openai.NewChatCompletion()
+	client := openai.NewClient("your api key")
+	chat := openai.NewChatCompletion()
 
 	chat.AddUserMessage("Hello world!")
 
@@ -33,6 +33,65 @@ func main() {
 	// chat.AddAssistantMessage(response.Choices[0].Message.Content)
 
 	fmt.Println(response.Choices[0].Message.Content)
+}
+
+```
+
+## Function Call Example
+
+```go
+package main
+
+import (
+	"fmt"
+
+	"github.com/Sricor/openai"
+)
+
+func main() {
+	client := openai.NewClient("your api key")
+	chat := openai.NewChatCompletion()
+
+	// https://platform.openai.com/docs/guides/gpt/function-calling
+	functions := openai.ChatCompletionFunction{
+		Name:        "get_current_weather",
+		Description: "Get the current weather in a given location",
+
+		// JSON Schema
+		Parameters: &openai.ChatCompletionFunctionParams{
+			Type: openai.JSONSchemaTypeObject,
+
+			Properties: map[string]*openai.JSONSchemaDefine{
+				"location": &openai.JSONSchemaDefine{
+					Type:        openai.JSONSchemaTypeString,
+					Description: "The city and state, e.g. San Francisco, CA",
+				},
+				"unit": &openai.JSONSchemaDefine{
+					Type: openai.JSONSchemaTypeString,
+					Enum: []string{"celsius", "fahrenheit"},
+				},
+			},
+			Required: []string{"location"},
+		},
+	}
+	chat.AddFunction(&functions)            // Add functions to request
+	chat.SetModel(openai.GPT3Dot5Turbo0613) // Set model to gpt-3.5-turbo-0613
+
+	chat.AddUserMessage("What's the weather like in Boston?")
+
+	response, err := client.CreateChatCompletion(chat)
+	if err != nil {
+		fmt.Printf("ChatCompletion error: %v\n", err)
+		return
+	}
+
+	fmt.Println(response.Choices[0].FinishReason)
+
+	if response.Choices[0].Message.FunctionCall != nil {
+		fmt.Println(response.Choices[0].Message.FunctionCall.Name)
+		fmt.Println(response.Choices[0].Message.FunctionCall.Arguments)
+	}
+
 }
 
 ```

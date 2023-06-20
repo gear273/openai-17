@@ -7,8 +7,7 @@ import (
 
 const modelsSuffix = "/models"
 
-
-// {      
+// {
 // 	"id": "gpt-3.5-turbo-16k",
 //     "object": "model",
 //     "created": 1683758102,
@@ -33,12 +32,10 @@ const modelsSuffix = "/models"
 //       "parent": null
 // }
 
-
 type ModelsResponse struct {
-
 }
 
-//unfinish
+// unfinish
 func (c *Client) ListModels() (err error) {
 	var response string
 

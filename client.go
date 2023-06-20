@@ -11,11 +11,11 @@ type Client struct {
 	Config Config
 }
 
-func NewClient(apiKey string) (*Client, error) {
+func NewClient(apiKey string) *Client {
 	config := defaultConfig(apiKey)
 	return &Client{
 		Config: config,
-	}, nil
+	}
 }
 
 func (c *Client) request(request *http.Request, v any) error {

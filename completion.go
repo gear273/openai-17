@@ -4,7 +4,9 @@ package openai
 
 // Model list
 const (
-	GPT3Dot5Turbo  = "gpt-3.5-turbo"
+	GPT3Dot5Turbo     = "gpt-3.5-turbo"
+	GPT3Dot5Turbo0613 = "gpt-3.5-turbo-0613"
+
 	TextDavinci003 = "text-davinci-003"
 )
 
