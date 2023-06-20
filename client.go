@@ -18,6 +18,12 @@ func NewClient(apiKey string) *Client {
 	}
 }
 
+func (c *Client) setHeaders(req *http.Request) {
+	req.Header.Set("Content-Type", "application/json")
+	req.Header.Set("Accept", "application/json; charset=utf-8")
+	req.Header.Set("Authorization", fmt.Sprintf("Bearer %s", c.Config.apiKey))
+}
+
 func (c *Client) request(request *http.Request, v any) error {
 	c.setHeaders(request)
 	response, err := c.Config.HTTPClient.Do(request)
@@ -31,12 +37,6 @@ func (c *Client) request(request *http.Request, v any) error {
 	}
 
 	return decodeResponse(response.Body, v)
-}
-
-func (c *Client) setHeaders(req *http.Request) {
-	req.Header.Set("Accept", "application/json; charset=utf-8")
-	req.Header.Set("Content-Type", "application/json")
-	req.Header.Set("Authorization", fmt.Sprintf("Bearer %s", c.Config.apiKey))
 }
 
 func isFailureStatusCode(resp *http.Response) bool {
@@ -65,3 +65,4 @@ func handleErrorResponse(resp *http.Response) error {
 	b, _ := io.ReadAll(resp.Body)
 	return fmt.Errorf("%v\n", string(b))
 }
+

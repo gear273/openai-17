@@ -9,18 +9,18 @@ import (
 const chatCompletionsSuffix = "/chat/completions"
 
 const (
-	ChatMessageRoleUser      = "user"
-	ChatMessageRoleSystem    = "system"
-	ChatMessageRoleAssistant = "assistant"
-	ChatMessageRoleFunction  = "function"
+	ChatCompletionMessageRoleUser      = "user"
+	ChatCompletionMessageRoleSystem    = "system"
+	ChatCompletionMessageRoleAssistant = "assistant"
+	ChatCompletionMessageRoleFunction  = "function"
 )
 
 type ChatCompletionFinishReason string
 
 const (
-	FinishReasonStop         ChatCompletionFinishReason = "stop"
-	FinishReasonLength       ChatCompletionFinishReason = "length"
-	FinishReasonFunctionCall ChatCompletionFinishReason = "function_call"
+	ChatCompletionFinishReasonStop         ChatCompletionFinishReason = "stop"
+	ChatCompletionFinishReasonLength       ChatCompletionFinishReason = "length"
+	ChatCompletionFinishReasonFunctionCall ChatCompletionFinishReason = "function_call"
 )
 
 type ChatCompletionMessage struct {
@@ -28,11 +28,6 @@ type ChatCompletionMessage struct {
 	Content      string                      `json:"content"`
 	Name         string                      `json:"name,omitempty"`
 	FunctionCall *ChatCompletionFunctionCall `json:"function_call,omitempty"`
-}
-
-type ChatCompletionFunctionCall struct {
-	Name      string `json:"name,omitempty"`
-	Arguments string `json:"arguments,omitempty"`
 }
 
 type ChatCompletionRequest struct {
@@ -61,6 +56,11 @@ type ChatCompletionFunctionParams struct {
 	Type       JSONSchemaType               `json:"type"`
 	Properties map[string]*JSONSchemaDefine `json:"properties,omitempty"`
 	Required   []string                     `json:"required,omitempty"`
+}
+
+type ChatCompletionFunctionCall struct {
+	Name      string `json:"name,omitempty"`
+	Arguments string `json:"arguments,omitempty"`
 }
 
 type ChatCompletionChoice struct {
@@ -94,21 +94,21 @@ func (c *Client) CreateChatCompletion(cr *ChatCompletionRequest) (cresp ChatComp
 
 func (c *ChatCompletionRequest) AddUserMessage(content string) {
 	c.Messages = append(c.Messages, ChatCompletionMessage{
-		Role:    ChatMessageRoleUser,
+		Role:    ChatCompletionMessageRoleUser,
 		Content: content,
 	})
 }
 
 func (c *ChatCompletionRequest) AddAssistantMessage(content string) {
 	c.Messages = append(c.Messages, ChatCompletionMessage{
-		Role:    ChatMessageRoleAssistant,
+		Role:    ChatCompletionMessageRoleAssistant,
 		Content: content,
 	})
 }
 
 func (c *ChatCompletionRequest) AddFunctionMessage(functionName string, content string) {
 	c.Messages = append(c.Messages, ChatCompletionMessage{
-		Role:    ChatMessageRoleFunction,
+		Role:    ChatCompletionMessageRoleFunction,
 		Name:    functionName,
 		Content: content,
 	})
@@ -135,10 +135,6 @@ func (c *ChatCompletionRequest) AddFunction(v any) {
 	default:
 		return
 	}
-}
-
-func (c *ChatCompletionRequest) Close() {
-	c = nil
 }
 
 func NewChatCompletion() *ChatCompletionRequest {

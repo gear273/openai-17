@@ -7,10 +7,10 @@ import (
 const openaiAPIBaseV1 = "https://api.openai.com/v1"
 
 type Config struct {
+	HTTPClient *http.Client
+
 	apiKey  string
 	apiBase string
-
-	HTTPClient *http.Client
 }
 
 func (c *Config) SetAPIKey(key string) {
