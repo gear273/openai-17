@@ -49,11 +49,11 @@ import (
 )
 
 func main() {
-	client := openai.NewClient("your api key")
+	client := openai.NewClient("")
 	chat := openai.NewChatCompletion()
 
 	// https://platform.openai.com/docs/guides/gpt/function-calling
-	functions := openai.ChatCompletionFunction{
+	functions := &openai.ChatCompletionFunction{
 		Name:        "get_current_weather",
 		Description: "Get the current weather in a given location",
 
@@ -74,8 +74,8 @@ func main() {
 			Required: []string{"location"},
 		},
 	}
-	chat.AddFunction(&functions)            // Add functions to request
-	chat.SetModel(openai.GPT3Dot5Turbo0613) // Set model to gpt-3.5-turbo-0613
+	chat.SetModel(openai.GPT3Dot5Turbo0613)                       // Set model to gpt-3.5-turbo-0613
+	chat.AddFunction(functions) // Add functions to request
 
 	chat.AddUserMessage("What's the weather like in Boston?")
 
@@ -84,7 +84,6 @@ func main() {
 		fmt.Printf("ChatCompletion error: %v\n", err)
 		return
 	}
-
 	fmt.Println(response.Choices[0].FinishReason)
 
 	if response.Choices[0].Message.FunctionCall != nil {

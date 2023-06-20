@@ -106,6 +106,14 @@ func (c *ChatCompletionRequest) AddAssistantMessage(content string) {
 	})
 }
 
+func (c *ChatCompletionRequest) AddFunctionMessage(functionName string, content string) {
+	c.Messages = append(c.Messages, ChatCompletionMessage{
+		Role:    ChatMessageRoleFunction,
+		Name:    functionName,
+		Content: content,
+	})
+}
+
 func (c *ChatCompletionRequest) ClearMessage() {
 	c.Messages = []ChatCompletionMessage{}
 }
@@ -114,8 +122,19 @@ func (c *ChatCompletionRequest) SetModel(model string) {
 	c.Model = model
 }
 
-func (c *ChatCompletionRequest) AddFunction(fn *ChatCompletionFunction) {
-	c.Functions = append(c.Functions, fn)
+func (c *ChatCompletionRequest) AddFunction(v any) {
+	if v == nil {
+		return
+	}
+
+	switch v := v.(type) {
+	case *ChatCompletionFunction:
+		c.Functions = append(c.Functions, v)
+	case []*ChatCompletionFunction:
+		c.Functions = append(c.Functions, v...)
+	default:
+		return
+	}
 }
 
 func (c *ChatCompletionRequest) Close() {
