@@ -74,8 +74,8 @@ func main() {
 			Required: []string{"location"},
 		},
 	}
-	chat.SetModel(openai.GPT3Dot5Turbo0613)                       // Set model to gpt-3.5-turbo-0613
-	chat.AddFunction(functions) // Add functions to request
+	chat.SetModel(openai.GPT3Dot5Turbo0613) // Set model to gpt-3.5-turbo-0613
+	chat.AddFunction(functions)             // Add functions to request
 
 	chat.AddUserMessage("What's the weather like in Boston?")
 
